@@ -3,7 +3,7 @@ const { NETWORK } = require(`${basePath}/constants/network.js`);
 const fs = require("fs");
 
 const {
-  baseUri,
+  baseIpfsUri,
   description,
   namePrefix,
   network,
@@ -22,7 +22,7 @@ data.forEach((item) => {
   } else {
     item.name = `${namePrefix} #${item.edition}`;
     item.description = description;
-    item.image = `${baseUri}/${item.edition}.png`;
+    item.image = `${baseIpfsUri}/${item.edition}.png`;
   }
   fs.writeFileSync(
     `${basePath}/build/json/${item.edition}.json`,
@@ -44,7 +44,7 @@ if (network == NETWORK.sol) {
     )}`
   );
 } else {
-  console.log(`Updated baseUri for images to ===> ${baseUri}`);
+  console.log(`Updated baseIpfsUri for images to ===> ${baseIpfsUri}`);
   console.log(`Updated description for images to ===> ${description}`);
   console.log(`Updated name prefix for images to ===> ${namePrefix}`);
 }

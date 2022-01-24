@@ -3,11 +3,11 @@ const fs = require("fs");
 const { createCanvas, loadImage } = require("canvas");
 const buildDir = `${basePath}/build`;
 const imageDir = `${buildDir}/images`;
-const { format, preview_gif } = require(`${basePath}/src/config.js`);
+const { format, previewGif } = require(`../src/config.js`);
 const canvas = createCanvas(format.width, format.height);
 const ctx = canvas.getContext("2d");
 
-const HashlipsGiffer = require(`${basePath}/modules/HashlipsGiffer.js`);
+const HashlipsGiffer = require(`../modules/HashlipsGiffer.js`);
 let hashlipsGiffer = null;
 
 const loadImg = async (_img) => {
@@ -26,7 +26,7 @@ const rawdata = fs.readdirSync(imageDir).forEach((file) => {
 const saveProjectPreviewGIF = async (_data) => {
   // Extract from preview config
   const { numberOfImages, order, repeat, quality, delay, imageName } =
-    preview_gif;
+    previewGif;
   // Extract from format config
   const { width, height } = format;
   // Prepare canvas

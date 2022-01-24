@@ -1,13 +1,15 @@
 const basePath = process.cwd();
-const { NETWORK } = require(`${basePath}/constants/network.js`);
+const { NETWORK } = require("../constants/network.js");
 const fs = require("fs");
-const sha1 = require(`${basePath}/node_modules/sha1`);
-const { createCanvas, loadImage } = require(`${basePath}/node_modules/canvas`);
-const buildDir = `${basePath}/build`;
-const layersDir = `${basePath}/layers`;
+const sha1 = require("../node_modules/sha1");
+const { createCanvas, loadImage } = require("../node_modules/canvas");
+
 const {
+  buildDir,
+  layersDir,
+  imagesDir,
   format,
-  baseUri,
+  baseIpfsUri,
   description,
   background,
   uniqueDnaTorrance,
@@ -21,7 +23,7 @@ const {
   network,
   solanaMetadata,
   gif,
-} = require(`${basePath}/src/config.js`);
+} = require("./config.js");
 const canvas = createCanvas(format.width, format.height);
 const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = format.smoothing;
@@ -43,6 +45,13 @@ const buildSetup = () => {
   if (gif.export) {
     fs.mkdirSync(`${buildDir}/gifs`);
   }
+};
+
+const copyToTempDir = async () => {
+  let res = await s3.listObjects().promise();
+
+  console.log(res);
+  return res;
 };
 
 const getRarityWeight = (_str) => {
@@ -130,7 +139,7 @@ const addMetadata = (_dna, _edition) => {
   let tempMetadata = {
     name: `${namePrefix} #${_edition}`,
     description: description,
-    image: `${baseUri}/${_edition}.png`,
+    image: `${imagesDir}/${_edition}.png`,
     dna: sha1(_dna),
     edition: _edition,
     date: dateTime,
@@ -422,4 +431,4 @@ const startCreating = async () => {
   writeMetaData(JSON.stringify(metadataList, null, 2));
 };
 
-module.exports = { startCreating, buildSetup, getElements };
+module.exports = { startCreating, buildSetup, getElements, copyToTempDir };

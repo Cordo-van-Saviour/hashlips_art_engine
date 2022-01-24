@@ -2,24 +2,28 @@ const fs = require("fs");
 const path = require("path");
 const { createCanvas, loadImage } = require("canvas");
 const basePath = process.cwd();
-const buildDir = `${basePath}/build/json`;
-const inputDir = `${basePath}/build/images`;
 const {
+  buildDir,
+  imagesDir,
+  jsonDir,
   format,
   namePrefix,
   description,
-  baseUri,
-} = require(`${basePath}/src/config.js`);
+  baseIpfsUri,
+} = require('../src/config.js');
+
+
+
 const console = require("console");
 const canvas = createCanvas(format.width, format.height);
 const ctx = canvas.getContext("2d");
 const metadataList = [];
 
 const buildSetup = () => {
-  if (fs.existsSync(buildDir)) {
-    fs.rmdirSync(buildDir, { recursive: true });
+  if (fs.existsSync(jsonDir)) {
+    fs.rmdirSync(jsonDir, { recursive: true });
   }
-  fs.mkdirSync(buildDir);
+  fs.mkdirSync(jsonDir);
 };
 
 const getImages = (_dir) => {
@@ -135,24 +139,24 @@ const saveMetadata = (_loadedImageObject) => {
   let tempMetadata = {
     name: `${namePrefix} #${shortName}`,
     description: description,
-    image: `${baseUri}/${shortName}.png`,
+    image: `${baseIpfsUri}/${shortName}.png`,
     edition: Number(shortName),
     attributes: tempAttributes,
     compiler: "HashLips Art Engine",
   };
   fs.writeFileSync(
-    `${buildDir}/${shortName}.json`,
+    `${jsonDir}/${shortName}.json`,
     JSON.stringify(tempMetadata, null, 2)
   );
   metadataList.push(tempMetadata);
 };
 
 const writeMetaData = (_data) => {
-  fs.writeFileSync(`${buildDir}/_metadata.json`, _data);
+  fs.writeFileSync(`${jsonDir}/_metadata.json`, _data);
 };
 
 const startCreating = async () => {
-  const images = getImages(inputDir);
+  const images = getImages(imagesDir);
   if (images == null) {
     console.log("Please generate collection first.");
     return;

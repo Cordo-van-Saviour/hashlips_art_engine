@@ -2,18 +2,19 @@ const fs = require("fs");
 const path = require("path");
 const { createCanvas, loadImage } = require("canvas");
 const basePath = process.cwd();
-const buildDir = `${basePath}/build/pixel_images`;
+const { buildDir } = require('../src/config');
+const pixelBuildDir = `${buildDir}/pixel_images`;
 const inputDir = `${basePath}/build/images`;
-const { format, pixelFormat } = require(`${basePath}/src/config.js`);
+const { format, pixelFormat } = require(`../src/config.js`);
 const console = require("console");
 const canvas = createCanvas(format.width, format.height);
 const ctx = canvas.getContext("2d");
 
 const buildSetup = () => {
-  if (fs.existsSync(buildDir)) {
-    fs.rmdirSync(buildDir, { recursive: true });
+  if (fs.existsSync(pixelBuildDir)) {
+    fs.rmdirSync(pixelBuildDir, { recursive: true });
   }
-  fs.mkdirSync(buildDir);
+  fs.mkdirSync(pixelBuildDir);
 };
 
 const getImages = (_dir) => {
@@ -55,7 +56,7 @@ const draw = (_imgObject) => {
 
 const saveImage = (_loadedImageObject) => {
   fs.writeFileSync(
-    `${buildDir}/${_loadedImageObject.imgObject.filename}`,
+    `${pixelBuildDir}/${_loadedImageObject.imgObject.filename}`,
     canvas.toBuffer("image/png")
   );
 };

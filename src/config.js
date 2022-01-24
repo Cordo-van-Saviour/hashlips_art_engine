@@ -1,24 +1,29 @@
-const basePath = process.cwd();
-const { MODE } = require(`${basePath}/constants/blend_mode.js`);
-const { NETWORK } = require(`${basePath}/constants/network.js`);
+const os = require("os");
+const workdir = os.tmpdir();
+const path = require("path");
+const buildDir = path.join(workdir, "build");
+const layersDir = path.join(workdir, "layers");
+const imagesDir = path.join(workdir, "build/images");
+const jsonDir = path.join(workdir, "build/json");
 
-const network = NETWORK.sol;
+const { MODE } = require("../constants/blend_mode.js");
+const { NETWORK } = require("../constants/network.js");
+
+const network = process.env.NETWORK;
+
+const share = process.env.SOLANA_SHARE;
+const address = process.env.SOLANA_ADDRESS;
 
 // General metadata for Ethereum
 const namePrefix = "Your Collection";
 const description = "Remember to replace this description";
-const baseUri = "ipfs://NewUriToReplace";
+const baseIpfsUri = process.env.BASE_IPFS_URI;
 
 const solanaMetadata = {
   symbol: "YC",
   seller_fee_basis_points: 1000, // Define how much % you want from secondary market sales 1000 = 10%
   external_url: "https://www.youtube.com/c/hashlipsnft",
-  creators: [
-    {
-      address: "7fXNuer5sbZtaTEPhtJ5g5gNtuyRoKkvxdjEjEnPN4mC",
-      share: 100,
-    },
-  ],
+  creators: [{ address, share }],
 };
 
 // If you have selected Solana then the collection starts from 0 automatically
@@ -101,8 +106,12 @@ const preview_gif = {
 };
 
 module.exports = {
+  buildDir,
+  layersDir,
+  imagesDir,
+  jsonDir,
   format,
-  baseUri,
+  baseIpfsUri,
   description,
   background,
   uniqueDnaTorrance,

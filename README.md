@@ -231,9 +231,9 @@ That's it, you're done.
 
 ## Utils
 
-### Updating baseUri for IPFS and description
+### Updating baseIpfsUri for IPFS and description
 
-You might possibly want to update the baseUri and description after you have ran your collection. To update the baseUri and description simply run:
+You might possibly want to update the baseIpfsUri and description after you have ran your collection. To update the baseIpfsUri and description simply run:
 
 ```sh
 npm run update_info
